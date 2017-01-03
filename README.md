@@ -1,0 +1,2 @@
+# rspecpuppet
+RSpec and Puppet
