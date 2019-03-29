@@ -1,0 +1,18 @@
+sudo: false
+language: ruby
+cache: bundler
+
+script: bundle exec rake
+rvm:
+  - 2.1.6
+
+before_install:
+- gem install bundler -v 1.17.3
+- gem check
+- bundle config specific_platform true
+- bundle install --path vendor
+
+notifications:
+  email: false
+  slack:
+    secure: lS5TPiH921osu4dWPXLoW2YucnxfUORA6XTeKP0MGBtJQFm0rX24hjCi9Dw0RS6BCkCYcRQU3IVRW3ekFkZpO7mx8ePTWXCXx5skaKwvO6EoSJ92OB7oDQNM7v+hyysCvE1jh9MAubSQxEE+i0CKBG5IX5uPyxQaThyyEEE1vFpPCYV1sJMHL9xqZ8zbOiRKR7SUaUvbR/Wkptiw8c9cJok0xfIAvLc5j+YvmQ9Q069wDggMxGqPkaMY1/5BVWT/akgxDC14IMjESW9eSI2tFN6OzAgbWGUzFTSS/vpGQ4ApBdrAY3iXojmpV9bABcWZAtq3PD/awnpmn2EQyucKckKF5oBCNoBFk7E/Ypn1vT9q/TvifIscNZfEcFYqGDYyjqEdRRcLg8BLAcL7oViRhgNODtJ1ydvuOmPrctACuvmjy+jhepstIeBbmh5zcUmWy10WY5yPDxuHEsJsb7oXwGWqo6fEMj8yRCnpehatwgKepTieS323LcqIpggMMRK7nk12mnQju1hVVqOPr/COJy1XCspVdwinCChCEx5usi1XIBVFPKQPUGSYlF7tjA2C7Us4hByOKKt/KNpJar2iMufLAcQmFjYcr8sV1rR+lKwC0jX8YLhvxkc1TGAhJCcjiZyLsP7q227KDp70q+42KYudjJ8jCRxoKhyRqCwTIng=

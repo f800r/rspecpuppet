@@ -1,0 +1,46 @@
+require 'bundler/setup'
+require 'metadata-json-lint/rake_task'
+require 'puppet-lint/tasks/puppet-lint'
+require 'puppet-syntax/tasks/puppet-syntax'
+require 'puppet/vendor/semantic/lib/semantic' unless Puppet.version.to_f < 3.6
+require 'puppet/version'
+require 'puppet_blacksmith/rake_tasks'
+require 'puppetlabs_spec_helper/rake_tasks'
+require 'rubocop/rake_task'
+require 'rubygems'
+
+RuboCop::RakeTask.new
+exclude_paths = %w(bundle/**/* vendor/**/* spec/**/* out/**/*)
+
+Rake::Task[:lint].clear
+PuppetLint.configuration.relative = true
+PuppetLint.configuration.disable_80chars
+PuppetLint.configuration.disable_class_inherits_from_params_class
+PuppetLint.configuration.disable_class_parameter_defaults
+PuppetLint.configuration.fail_on_warnings = true
+PuppetLint::RakeTask.new :lint do |config|
+  config.ignore_paths = exclude_paths
+end
+
+PuppetSyntax.exclude_paths = exclude_paths
+
+desc 'Run metadata_lint, syntax, validate, lint, spec'
+task test: [
+    :travis_lint,
+    :metadata_lint,
+    :syntax,
+    :validate,
+    :lint,
+    :spec,
+]
+
+desc 'Check travis configuration file'
+task :travis_lint do
+  system "echo running travis lint"
+  directory_travis_file = File.expand_path(File.join(__FILE__, '../../../'))
+  system "echo '\n' |
+          travis lint #{directory_travis_file}/.travis.yml \\
+          --skip-version-check \\
+          --skip-completion-check \\
+          --no-interactive"
+end
